@@ -2,6 +2,9 @@ package mylogger
 
 import (
 	"errors"
+	"fmt"
+	"path"
+	"runtime"
 	"strings"
 )
 
@@ -45,4 +48,20 @@ func ParseLogLevel(s string) (LogLevel, error) {
 		err := errors.New("无效的日志级别")
 		return UNKNOWN, err
 	}
+}
+
+func getLogInfo(skip int) (fileName, funcName string, lineNo int) {
+	pc, file, lineNo, ok := runtime.Caller(skip)
+	if !ok {
+		fmt.Printf("err \n")
+		return
+	}
+
+	//获取方法名
+	funcName = runtime.FuncForPC(pc).Name()
+
+	//获取文件名
+	fileName = path.Base(file)
+	funcName = strings.Split(funcName, ".")[1]
+	return
 }

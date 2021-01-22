@@ -2,9 +2,6 @@ package mylogger
 
 import (
 	"fmt"
-	"path"
-	"runtime"
-	"strings"
 	"time"
 )
 
@@ -15,22 +12,6 @@ func Newlog(levelStr string) Logger {
 		panic(err)
 	}
 	return Logger{lever}
-}
-
-func getLogInfo(skip int) (fileName, funcName string, lineNo int) {
-	pc, file, lineNo, ok := runtime.Caller(skip)
-	if !ok {
-		fmt.Printf("err \n")
-		return
-	}
-
-	//获取方法名
-	funcName = runtime.FuncForPC(pc).Name()
-
-	//获取文件名
-	fileName = path.Base(file)
-	funcName = strings.Split(funcName, ".")[1]
-	return
 }
 
 //记录日志输出
